@@ -24,7 +24,7 @@ app.post("/posts/:id/comments", async (req, res) => {
 
   commentsByPostId[req.params.id] = comments;
 
-  await axios.post("http://localhost:4005/events", {
+  await axios.post("http://event-bus-srv:4005/events", {
     type: "CommentCreated",
     data: {
       id: commentId,
@@ -42,7 +42,7 @@ app.post("/events", async (req, res) => {
 
   const { type, data } = req.body;
 
-  // when a comment has finally been modereated, the comment service is responsible for updating its status then emitting the commentUpdated event with the new data.
+   // when a comment has finally been modereated, the comment service is responsible for updating its status then emitting the commentUpdated event with the new data.
   // the service responsible for the resource should always be the one to update it (moderationService should not directly update it so that it's decoupled from the implementation details)
   if (type === "CommentModerated") {
     const { postId, id, status, content } = data;
@@ -53,7 +53,7 @@ app.post("/events", async (req, res) => {
     });
     comment.status = status;
 
-    await axios.post("http://localhost:4005/events", {
+    await axios.post("http://event-bus-srv:4005/events", {
       type: "CommentUpdated",
       data: {
         id,

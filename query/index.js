@@ -16,7 +16,7 @@ const handleEvent = (type, data) => {
 
     posts[id] = { id, title, comments: [] };
   }
-   
+     
   // when the commenService creates a comment, we add it to post that it belongs to.
   // the client will then fetch  data from this queryService meaning it doesnt have to make a direct request to the postService and then for each post make a seperate request to the commentService to get each comment (n+1)
   if (type === "CommentCreated") {
@@ -51,11 +51,11 @@ app.post("/events", (req, res) => {
   res.send({});
 });
 
+// when server comes back online fetch all events from the beginning of time and handle them to make sure data is in sync (very simplistic naive implementation)
 app.listen(4002, async () => {
   console.log("Listening on 4002");
   try {
-    // when server comes back online fetch all events from the beginning of time and handle them to make sure data is in sync (very simplistic naive implementation)
-    const res = await axios.get("http://localhost:4005/events");
+    const res = await axios.get("http://event-bus-srv:4005/events");
 
     for (let event of res.data) {
       console.log("Processing event:", event.type);
