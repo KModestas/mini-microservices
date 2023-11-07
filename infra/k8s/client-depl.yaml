@@ -3,6 +3,7 @@ kind: Deployment
 metadata:
   name: client-depl
 spec:
+  # only run 1 instance of the pod:
   replicas: 1
   selector:
     matchLabels:
@@ -11,6 +12,7 @@ spec:
     metadata:
       labels:
         app: client
+    # list all containers inside this pod:
     spec:
       containers:
         - name: client
@@ -22,6 +24,7 @@ metadata:
   name: client-srv
 spec:
   selector:
+    # service should manage pods with this label:
     app: client
   ports:
     - name: client
