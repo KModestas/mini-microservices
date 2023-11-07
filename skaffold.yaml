@@ -1,17 +1,24 @@
+#  specifies the version of the Skaffold API that the configuration is written for
 apiVersion: skaffold/v4beta3
 kind: Config
 manifests:
   rawYaml:
+    # where to find k8 config files
     - ./infra/k8s/*
 build:
   local:
-    push: false
-  artifacts:
+    # dont automatically push images to dockerhub after skaffold builds them
+    push: false 
+  # list of all the artifacts that Skaffold will build from your source code.
+  artifacts:  
     - image: rallycoding/client-99
+      # directory of the image
       context: client
       sync:
         manual:
+            # watch for js files in src/ (on our host machine)
           - src: src/**/*.js
+            # copy those changed files to the WD of the running container (without restarting or rebuilding the image)
             dest: .
       docker:
         dockerfile: Dockerfile
