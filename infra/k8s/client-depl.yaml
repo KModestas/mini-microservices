@@ -7,10 +7,12 @@ spec:
   replicas: 1
   selector:
     matchLabels:
+      # select pods with this label
       app: client
   template:
     metadata:
       labels:
+        # apply label to this pod
         app: client
     # list all containers inside this pod:
     spec:
@@ -24,7 +26,7 @@ metadata:
   name: client-srv
 spec:
   selector:
-    # service should manage pods with this label:
+    # service should manage pods that have this label:
     app: client
   ports:
     - name: client
